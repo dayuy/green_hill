@@ -11,6 +11,10 @@ import (
 	"unsafe"
 )
 
+/**
+	如何获取一个变量的type？ 可以通过反射
+**/
+
 func CheckType(v interface{}) {
 	t:=reflect.TypeOf(v)
 	switch t.Kind() {
@@ -31,7 +35,7 @@ func TestBasicType(t *testing.T) {
 func TestTypeAndValue(t *testing.T) {
 	var f int64 = 10
 	t.Log(reflect.TypeOf(f), reflect.ValueOf(f))
-	t.Log(reflect.ValueOf(f).Type())
+	t.Log(reflect.ValueOf(f).Type(), reflect.TypeOf(f).Kind())
 }
 
 /**
@@ -67,6 +71,8 @@ func TestInvokeByName(t *testing.T) {
 
 /**
 	deepEqual
+	: slice 和 map 只能跟nil比较，不能相互比较
+	便可以使用 deepEqual(a,b) 进行比较
 **/
 func TestDeepEqual(t *testing.T) {
 	a:=map[int]string{1:"one",2:"two",3:"three"}
@@ -134,15 +140,19 @@ func TestFillNameAndAge(t *testing.T) {
 
 /**
 	unsafe
+	不安全行为
+	i := 10
+	f := *(*float64)(unsafe.Pointer(&i))
 **/
 type MyInt int
-
+// 应用1 可以使用的别名
 func TestCovert(t *testing.T) {
 	a:=[]int{1,2,3,4}
 	b:=*(*[]MyInt)(unsafe.Pointer(&a)) // 如果是转换别名的类型，ok
 	t.Log(b)
 }
 
+// 得到错误结果
 func TestUnsafe(t *testing.T) {
 	i:=10
 	f:=*(*float64)(unsafe.Pointer(&i))

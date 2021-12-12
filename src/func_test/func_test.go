@@ -39,8 +39,10 @@ func slowFun(op int) int {
 	return op
 }
 
+// 可变参数
 func Sum(ops ...int) int {
 	ret := 0
+	fmt.Printf("type of ops = %T\n", ops) // []int
 	for _, op := range ops {
 		ret += op
 	}
@@ -55,11 +57,12 @@ func Clear() {
 	fmt.Println("Clear resources.")
 }
 
+// defer 函数
 func TestDefer(t *testing.T) {
 	defer Clear() // 在函数执行完前，执行这个defer；常做一些清理操作。
 	fmt.Println("start")
-	// panic("err") // panic 不会执行后面的语句，但依然要执行panic
-	// fmt.Println("end")
+	panic("err") // panic 不会执行后面的语句，但依然要执行defer
+	fmt.Println("end")
 }
 //
 //func TestPackage(t *testing.T) {
@@ -73,3 +76,12 @@ func TestConcurrentMap(t *testing.T) {
 	m.Set(cm.StrKey("key"), 10)
 	t.Log(m.Get(cm.StrKey("key")))
 }
+
+
+/**
+	函数是一等公民
+	1、可以有多个返回值
+	2、所有参数都是值传递：slice、map、channel会有传引用的错觉
+	3、函数可以作为变量的值
+	4、函数可以作为参数和返回值
+**/

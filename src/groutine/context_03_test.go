@@ -21,7 +21,7 @@ import (
 
 func isCancelledContext(ctx context.Context) bool {
 	select {
-	case <-ctx.Done(): // 接收取消通知
+	case <-ctx.Done(): // 接收取消通知， 由此可知，context本质是个cannel
 		return true
 	default:
 		return false
@@ -50,6 +50,20 @@ func TestCancelContext(t *testing.T) {
 	并发任务
 	1。 在多线程的情况下保证代码只执行一次 懒汉式
 		单例模式 sync.Once
+	如java中
+	public class Singleton {
+		private static Singleton INSTANCE = null;
+		private Singleton() {}
+		public static Singleton getInstance() {
+			if (INSTANCE == null){
+				synchronized (Singleton.class) {
+					if (INSTANCE == null){
+						INSTANCE = new Singleton();
+					}
+				}
+			}
+		}
+	}
 **/
 type Singleton struct {
 
@@ -81,6 +95,7 @@ func TestGetSingletonObj(t *testing.T) {
 /**
 	并发模式
 	first response
+	采用buffer channel 防止协程泄漏
 **/
 func runTask(id int) string {
 	time.Sleep(10 * time.Millisecond)
@@ -117,8 +132,8 @@ func AllResponse() string {
 
 func TestFirstResponse(t *testing.T) {
 	t.Log("Before", runtime.NumGoroutine()) // 所有协程数 2
-	//t.Log(FirstResponse())
-	t.Log(AllResponse())
+	t.Log(FirstResponse())
+	//t.Log(AllResponse())
 	time.Sleep(time.Second * 1) // 等所有任务完成，但只取了一次，还有11条没有释放
 	t.Log("After:", runtime.NumGoroutine()) // 11
 }

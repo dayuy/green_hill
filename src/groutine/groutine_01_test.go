@@ -23,9 +23,9 @@ func TestGroutine(t *testing.T)  {
 func TestCounter(t *testing.T) {
 	counter := 0
 	for i:=0;i<5000;i++{
-		//go func() {
+		go func() {
 			counter++
-		//}()
+		}()
 	}
 	time.Sleep(1 * time.Second)
 	t.Logf("counter=%d", counter) // counter = 4791; 因为counter在不同的协程里做自增，并发条件 不是线程安全的程序
@@ -37,8 +37,10 @@ func TestCounterThreadSafe(t *testing.T)  {
 	counter := 0
 	for i:=0;i<5000;i++{
 		go func() {
-			defer func() {mut.Unlock()}()
-			mut.Lock()
+			defer func() {
+				mut.Unlock() // 解锁
+			}()
+			mut.Lock() // 每个协程上锁
 			counter++
 		}()
 	}
@@ -66,7 +68,7 @@ func TestCounterThreadGroup(t *testing.T)  {
 
 
 /**
-	CSP communication sequential process
+	CSP并发机制 communication sequential process
 	go 中的channel是有容量限制，并且独立处理Groutine的。
 	使程序具有异步的能力
 **/
@@ -91,8 +93,8 @@ func TestService(t *testing.T) {
 	// 串行的输出，按照执行顺序
 }
 
-// 改造为，1、在调用service时 启动另外一个协程，而不是阻塞当前程序运行
-// 		 2、当返回结果时，放到channel里，需要用的话 从channel里读取
+// 改造为异步，1、在调用service时 启动另外一个协程，而不是阻塞当前程序运行
+// 		     2、当返回结果时，放到channel里，需要用的话 从channel里读取
 func AsyncService() chan string {
 	//retCh := make(chan string) // 声明一个channel
 	retCh := make(chan string, 1) // 声明一个buffer channel：是内部不阻塞

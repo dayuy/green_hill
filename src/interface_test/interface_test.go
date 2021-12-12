@@ -11,6 +11,10 @@ type Programmer interface {
 type GoProgrammer struct {
 }
 
+// 自定义方法别名（签名）
+type IntConv func(a int) int
+
+// 签名要实现接口里的方法
 func (g *GoProgrammer) WriteHelloWorld() string {
 	return "Hello World"
 }

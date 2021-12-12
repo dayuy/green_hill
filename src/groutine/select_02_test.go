@@ -9,6 +9,7 @@ import (
 
 /**
 	多渠道选择，select，channel都没有返回的话会阻塞
+	应用：超时控制
 **/
 func TestSelect(t *testing.T) {
 	select {
@@ -23,7 +24,7 @@ func TestSelect(t *testing.T) {
 /**
 	关闭channel（因为ch<-i,必须与 <-ch相同。否则会报错）
 	1。 向关闭的channel发送数据，会导致panic
-	2、v,ok <- ch;ok为true时表示正常接受，false表示通道关闭
+	2、v,ok <- ch;ok为true时表示正常接受，false表示通道关闭 （接收已关闭的通道，会一直阻塞）
 	3、所有的channel接收者都会在channel关闭时，立刻从阻塞等待中返回且ok为false。
 		使用场景：这个广播机制常被利用，进行向多个订阅者同时发送信号（退出信号）
 **/
@@ -76,15 +77,12 @@ func isCancelled(cancelChan chan struct{}) bool {
 		return false
 	}
 }
-
 func cancel_1(cancelChan chan struct{}) {
 	cancelChan <- struct{}{} // 发了个任意的data 到chan上，告诉其取消任务
 }
-
 func cancel_2(cancelChan chan struct{})  {
 	close(cancelChan)
 }
-
 func TestCancel(t *testing.T) {
 	cancelChan := make(chan struct{}, 0)
 	for i:= 0;i<5;i++{
