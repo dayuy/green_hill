@@ -8,6 +8,8 @@ import (
 	"time"
 )
 
+// 内置http
+
 func main1(){
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Hello World!")
@@ -28,7 +30,8 @@ func Hello(w http.ResponseWriter, r *http.Request, ps httprouter.Params )  {
 	fmt.Fprintf(w, "hello, %s!\n", ps.ByName("name"))
 }
 
-func main2() {
+// 第三方 http handler
+func main() {
 	router:=httprouter.New()
 	router.GET("/", Index)
 	router.GET("/hello/:name", Hello)

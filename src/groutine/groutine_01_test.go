@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func TestGroutine(t *testing.T)  {
+func TestGroutine(t *testing.T){
 	for i:=0;i<10;i++{
 		go func(i int) {   // 在不同的协程里做
 			fmt.Println(i) // 9 3 4 5 678012 因为协程被调用时不是按照编程顺序的

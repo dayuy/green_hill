@@ -45,7 +45,7 @@ func GetEmployeeByName(w http.ResponseWriter, r *http.Request, ps httprouter.Par
 	w.Write(infoJson)
 }
 
-func main() {
+func main3() {
 	router:=httprouter.New()
 	router.GET("/", Index2)
 	router.GET("/employee/:name", GetEmployeeByName)
