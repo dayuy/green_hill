@@ -13,7 +13,7 @@ func main2() {
 		// return
 		func() {
 			defer fmt.Println("B.defer")
-			// return B.defer -- A -- A.defer 只是退出当前routine
+			// return           // B.defer -- A -- A.defer 只是退出当前routine
 			runtime.Goexit() // B.defer -- A.defer 退出goroutine 到主routine
 			fmt.Printf("B")
 		}()

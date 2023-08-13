@@ -63,7 +63,6 @@ func main() {
 	channelSelect()
 }
 
-
 /**
 close() 关闭channel管道
 注意：向关闭的channel，传送数据，会引发panic，导致接收立即返回0值  panic：send on closed channel
@@ -108,7 +107,7 @@ func fibonacii(c, quit chan int) {
 		select {
 		case c <- x:
 			x = y
-			y = x+y
+			y = x + y
 		case <-quit:
 			fmt.Println("Quit")
 			return

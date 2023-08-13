@@ -22,13 +22,13 @@ func newTask() {
 // 主goroutine
 func main1() {
 	// 正常流程会按顺序执行
-	// newTask()
+	//newTask()
 
 	// 创建一个go线程 去执行 newTask() 流程
 	go newTask()
 
-	i:=0
-	for i<8 {
+	i := 0
+	for i < 8 {
 		i++
 		fmt.Printf("main goroutine: i = %d\n", i)
 		time.Sleep(1 * time.Second)

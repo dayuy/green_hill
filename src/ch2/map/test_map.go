@@ -18,7 +18,7 @@ func main() {
 		fmt.Println(myMap)
 	}
 
-	myMap3 := map[string]string {
+	myMap3 := map[string]string{
 		"one": "php",
 		"two": "haha",
 	}
@@ -39,9 +39,14 @@ func main() {
 	myMap4["J"] = "Haha"
 
 	printMap(myMap4)
+	fmt.Println(myMap4["U"])
+	println("=======1=====")
+	fmt.Println(myMap4["M"] == "")
+	fmt.Println(myMap4[""] == "")
+	println("=======2=====")
 }
 
-func printMap(cityMap map[string]string)  { // 传递的是一个引用
+func printMap(cityMap map[string]string) { // 传递的是一个引用
 	cityMap["E"] = "hala"
 	for k, v := range cityMap {
 		fmt.Println("key = ", k)
